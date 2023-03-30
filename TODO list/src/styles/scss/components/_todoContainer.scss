@@ -1,0 +1,8 @@
+@import "../utils/mixins";
+@import "../utils/variables";
+
+.todos-container {
+  border: 1px solid black;
+  height: 400px;
+  overflow: auto;
+}

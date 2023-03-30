@@ -1,0 +1,89 @@
+* {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  text-decoration: none;
+  box-sizing: border-box;
+}
+
+.wrapper {
+  min-height: 100dvh;
+  margin-top: 24px;
+  display: flex;
+  justify-content: center;
+}
+
+::-webkit-scrollbar {
+  width: 2px;
+}
+
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px grey;
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: gray;
+  border-radius: 8px;
+}
+
+.add-todo-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+.add-todo-form #description {
+  resize: none;
+  overflow-y: scroll;
+}
+.add-todo-form #description,
+.add-todo-form #title {
+  padding: 12px;
+  border-radius: 4px;
+  outline: none;
+}
+
+.todo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 12px;
+  border: 1px solid blue;
+  padding: 8px;
+  cursor: grab;
+}
+.todo .typography {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.todo .typography .todo-description {
+  border: none;
+  height: 50px;
+  max-width: 260px;
+  overflow-y: auto;
+  padding: 8px;
+}
+.todo .buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  gap: 12px;
+}
+.todo .buttons * {
+  cursor: pointer;
+}
+
+.todos-container {
+  border: 1px solid black;
+  height: 400px;
+  overflow: auto;
+}
+
+.container {
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+}
