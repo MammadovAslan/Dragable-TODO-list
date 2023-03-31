@@ -14,15 +14,48 @@ const Todo = ({ id, isDone, position, title, nestedTodos, todos, setTodos }: Tod
     setDone(e.target.checked);
 
     if (setTodos && todos) {
-      const index = todos.findIndex((todo) => todo.id === id);
-      const newTodos = [...todos];
-      newTodos[index] = { ...newTodos[index], isDone: e.target.checked };
-      setTodos(newTodos);
+      const updatedTodo = { id, isDone: e.target.checked, position, title, nestedTodos };
+      const updatedTodos = updateTodo(id, updatedTodo, todos);
+      setTodos(updatedTodos);
     }
   };
 
   const removeTodo = () => {
-    setTodos && setTodos((prev) => prev.filter((todo) => todo.id !== id));
+    if (setTodos && todos) {
+      const updatedTodos = removeNestedTodo(id, todos);
+      setTodos(updatedTodos);
+    }
+  };
+
+  const removeNestedTodo = (todoId: string, todos: TodoI[]): TodoI[] => {
+    const updatedTodos = todos.filter((todo) => todo.id !== todoId);
+
+    return updatedTodos.map((todo) => {
+      if (todo.nestedTodos.length > 0) {
+        return {
+          ...todo,
+          nestedTodos: removeNestedTodo(todoId, todo.nestedTodos),
+        };
+      } else {
+        return todo;
+      }
+    });
+  };
+  const updateTodo = (todoId: string, updatedTodo: TodoI, todos: TodoI[]): TodoI[] => {
+    const updatedTodos = todos.map((todo) => {
+      if (todo.id === todoId) {
+        return updatedTodo;
+      } else if (todo.nestedTodos.length > 0) {
+        return {
+          ...todo,
+          nestedTodos: updateTodo(todoId, updatedTodo, todo.nestedTodos),
+        };
+      } else {
+        return todo;
+      }
+    });
+
+    return updatedTodos;
   };
 
   const clickHandler = () => {
