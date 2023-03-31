@@ -1,9 +1,11 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap");
 * {
   list-style: none;
   margin: 0;
   padding: 0;
   text-decoration: none;
   box-sizing: border-box;
+  font-family: "Roboto Condensed", sans-serif;
 }
 
 .wrapper {
@@ -46,22 +48,32 @@
 
 .todo {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  flex-direction: column;
+  gap: 24px;
   margin: 12px;
   border: 1px solid blue;
   padding: 8px;
   cursor: grab;
 }
-.todo .typography {
+.todo .todo-header {
   display: flex;
-  flex-direction: column;
   gap: 12px;
+  justify-content: space-between;
 }
-.todo .typography .todo-description {
+.todo .todo-header .todo-title {
+  cursor: pointer;
+  margin-left: 8px;
+}
+.todo .todo-header .title-input {
+  font-size: 24px;
+  font-weight: 600;
+  padding-left: 8px;
+  border: none;
+  outline: none;
+}
+.todo .todo-description {
   border: none;
   height: 50px;
-  max-width: 260px;
   overflow-y: auto;
   padding: 8px;
 }
@@ -74,6 +86,9 @@
 }
 .todo .buttons * {
   cursor: pointer;
+}
+.todo .add-todo-button {
+  align-self: flex-end;
 }
 
 .todos-container {

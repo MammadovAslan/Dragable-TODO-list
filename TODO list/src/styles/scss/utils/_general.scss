@@ -1,5 +1,6 @@
 @import "./mixins";
 @import "./variables";
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Condensed&display=swap");
 
 * {
   list-style: none;
@@ -7,6 +8,7 @@
   padding: 0;
   text-decoration: none;
   box-sizing: border-box;
+  font-family: "Roboto Condensed", sans-serif;
 }
 
 .wrapper {
