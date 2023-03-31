@@ -29,7 +29,6 @@ const Todo = ({ id, isDone, position, title, nestedTodos, todos, setTodos }: Tod
 
   const removeNestedTodo = (todoId: string, todos: TodoI[]): TodoI[] => {
     const updatedTodos = todos.filter((todo) => todo.id !== todoId);
-
     return updatedTodos.map((todo) => {
       if (todo.nestedTodos.length > 0) {
         return {
@@ -41,6 +40,7 @@ const Todo = ({ id, isDone, position, title, nestedTodos, todos, setTodos }: Tod
       }
     });
   };
+
   const updateTodo = (todoId: string, updatedTodo: TodoI, todos: TodoI[]): TodoI[] => {
     const updatedTodos = todos.map((todo) => {
       if (todo.id === todoId) {
@@ -62,18 +62,26 @@ const Todo = ({ id, isDone, position, title, nestedTodos, todos, setTodos }: Tod
     setTitleClicked(true);
     inputRef?.current?.focus();
   };
+const changeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+  setTitleValue(e.target.value);
 
-  const changeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTitleValue(e.target.value);
+  if (setTodos && todos) {
+    const updateTodo = (todosList: TodoI[], todoId: string, newTitle: string): TodoI[] => {
+      return todosList.map(todo => {
+        if (todo.id === todoId) {
+          return { ...todo, title: newTitle };
+        } else if (todo.nestedTodos.length !== 0) {
+          return { ...todo, nestedTodos: updateTodo(todo.nestedTodos, todoId, newTitle) };
+        }
+        return todo;
+      });
+    };
 
-    if (setTodos && todos) {
-      const index = todos.findIndex((todo) => todo.id === id);
-      const newTodos = [...todos];
-      newTodos[index] = { ...newTodos[index], title: e.target.value };
-      setTodos(newTodos);
-    }
-    setTitleClicked(false);
-  };
+    const updatedTodos = updateTodo(todos, id, e.target.value);
+    setTodos(updatedTodos);
+  }
+  setTitleClicked(false);
+};
 
   const inputStyles = {
     opacity: titleClicked ? "1" : "0",
