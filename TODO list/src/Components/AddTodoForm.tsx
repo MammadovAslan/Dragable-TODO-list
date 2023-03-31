@@ -2,42 +2,57 @@ import { useState } from "react";
 import { FormProps, TodoI } from "../types/types";
 import { v4 as uuidv4 } from "uuid";
 
-const AddTodoForm = ({ setTodos, todos }: FormProps) => {
+const AddTodoForm = ({ setTodos, todos, isNestedForm, setShowForm, nestedTodoId }: FormProps) => {
   const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
 
-  const submitHander = (e: React.FormEvent) => {
+  const submitHandler = (e: React.FormEvent) => {
     e.preventDefault();
 
     const todo: TodoI = {
       id: uuidv4(),
-      description,
       title,
       isDone: false,
       position: todos.length + 1,
       nestedTodos: [],
     };
 
-    setTodos((prev) => [...prev, todo]);
+    if (isNestedForm && nestedTodoId && setShowForm) {
+      const parentTodo = findParentTodoById(todos, nestedTodoId);
+      if (parentTodo) {
+        parentTodo.nestedTodos.push(todo);
+        setTodos([...todos]);
+        setShowForm(false);
+      }
+    } else {
+      setTodos((prev) => [...prev, todo]);
+    }
+
+    setTitle("");
+  };
+
+  const findParentTodoById = (todos: TodoI[], id: string): TodoI | undefined => {
+    for (let i = 0; i < todos.length; i++) {
+      if (todos[i].id === id) {
+        return todos[i];
+      } else if (todos[i].nestedTodos.length > 0) {
+        const parentTodo = findParentTodoById(todos[i].nestedTodos, id);
+        if (parentTodo) {
+          return parentTodo;
+        }
+      }
+    }
+    return undefined;
   };
 
   return (
     <div className="form-container">
-      <form className="add-todo-form" onSubmit={submitHander}>
+      <form className="add-todo-form" onSubmit={submitHandler}>
         <input
           type="text"
           id="title"
           placeholder="Add title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-        />
-        <textarea
-          id="description"
-          placeholder="Add description"
-          cols={30}
-          rows={3}
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
         />
         <button className="submit-button">Add</button>
       </form>

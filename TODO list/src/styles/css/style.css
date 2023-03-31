@@ -90,6 +90,12 @@
 .todo .add-todo-button {
   align-self: flex-end;
 }
+.todo .nested-todo-container {
+  margin-left: 18px;
+}
+.todo .nested-todo-container .todo-description {
+  height: 40px;
+}
 
 .todos-container {
   border: 1px solid black;

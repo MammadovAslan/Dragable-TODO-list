@@ -1,19 +1,12 @@
 import { useState, useRef } from "react";
-import { TodoI } from "../types/types";
+import { TodoI, TodoProps } from "../types/types";
+import AddTodoForm from "./AddTodoForm";
 
-const Todo = ({
-  description,
-  id,
-  isDone,
-  position,
-  title,
-  nestedTodos,
-  todos,
-  setTodos,
-}: TodoI) => {
+const Todo = ({ id, isDone, position, title, nestedTodos, todos, setTodos }: TodoProps) => {
   const [done, setDone] = useState<boolean>(isDone);
   const [titleClicked, setTitleClicked] = useState(false);
   const [titleValue, setTitleValue] = useState(title);
+  const [showForm, setShowForm] = useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -38,7 +31,7 @@ const Todo = ({
   };
 
   const changeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTitleValue(e.target.value)
+    setTitleValue(e.target.value);
 
     if (setTodos && todos) {
       const index = todos.findIndex((todo) => todo.id === id);
@@ -46,10 +39,10 @@ const Todo = ({
       newTodos[index] = { ...newTodos[index], title: e.target.value };
       setTodos(newTodos);
     }
-    setTitleClicked(false)
+    setTitleClicked(false);
   };
 
-  const style = {
+  const inputStyles = {
     opacity: titleClicked ? "1" : "0",
     width: titleClicked ? "auto" : "0",
   };
@@ -65,7 +58,7 @@ const Todo = ({
         <input
           type="text"
           className="title-input"
-          style={style}
+          style={inputStyles}
           ref={inputRef}
           value={titleValue}
           onChange={(e) => setTitleValue(e.target.value)}
@@ -80,8 +73,42 @@ const Todo = ({
           </button>
         </div>
       </div>
-      <p className="todo-description">{description}</p>
-      <button className="add-todo-button">Add to-do</button>
+      {nestedTodos.length !== 0 && (
+        <ul className="nested-todo-container">
+          {nestedTodos.map((todo: TodoI) => (
+            <li className="todo" key={todo.id}>
+              <Todo
+                id={todo.id}
+                isDone={todo.isDone}
+                nestedTodos={todo.nestedTodos}
+                position={todo.position}
+                title={todo.title}
+                todos={todos}
+                setTodos={setTodos}
+              />
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {showForm ? (
+        <AddTodoForm
+          setTodos={setTodos}
+          todos={todos}
+          isNestedForm={true}
+          setShowForm={setShowForm}
+          nestedTodoId={id}
+        />
+      ) : (
+        <button
+          className="add-todo-button"
+          onClick={() => {
+            setShowForm(true);
+          }}
+        >
+          Add to-do
+        </button>
+      )}
     </>
   );
 };

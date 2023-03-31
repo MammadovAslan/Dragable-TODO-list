@@ -10,7 +10,7 @@ const App = () => {
     <div className="wrapper">
       <div className="container">
         <AddTodoForm setTodos={setTodos} todos={todos} />
-        <TodoContainer setTodos={setTodos} todos={todos} />
+        <TodoContainer setTodos={setTodos} todos={todos}  />
       </div>
     </div>
   );

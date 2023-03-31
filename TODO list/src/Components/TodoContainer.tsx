@@ -7,6 +7,8 @@ const TodoContainer = ({ setTodos, todos }: TodoContainerProps) => {
     setHasTodo(todos.length !== 0);
   }, [todos]);
 
+  console.log(todos);
+
   const [currentTodo, setCurrentTodo] = useState<TodoI>();
 
   const dragStart = (e: React.DragEvent<HTMLLIElement>, todo: TodoI) => {
