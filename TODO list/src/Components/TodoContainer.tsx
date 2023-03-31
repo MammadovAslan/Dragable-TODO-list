@@ -71,7 +71,6 @@ const TodoContainer = ({ setTodos, todos }: TodoContainerProps) => {
                 }}
               >
                 <Todo
-                  description={todo.description}
                   id={todo.id}
                   isDone={todo.isDone}
                   nestedTodos={todo.nestedTodos}
